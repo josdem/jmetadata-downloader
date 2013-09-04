@@ -19,6 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jas.downloader.bean.INSTALLER;
 import org.jas.downloader.service.DownloaderService;
+import org.jas.downloader.service.DownloaderStats;
 import org.jas.downloader.util.DownloaderContext;
 
 
@@ -28,6 +29,8 @@ public class DownloaderController {
 	
 	@EJB
 	private DownloaderService downloaderService; 
+	@EJB
+	private DownloaderStats downloaderStats;
 	
 	@Inject
 	private DownloaderContext downloaderContext;
@@ -38,9 +41,11 @@ public class DownloaderController {
 	@Path("/getUbuntu")
 	@Produces({ MediaType.APPLICATION_OCTET_STREAM })
 	public Response getQuery(@Context HttpServletRequest request) throws IOException {
-		log.info("DOWNLOADING Ubuntu");
+		log.info("DOWNLOADING Ubuntu from: " + request.getRemoteAddr());
+		
 		File file = downloaderContext.getFile(INSTALLER.Ubuntu);
         StreamingOutput stream = downloaderService.getStream(file);
+        downloaderStats.saveRemoteAddress(request.getRemoteAddr());
         
         return Response.ok(stream).header("content-disposition","attachment; filename = "+file.getName()).build();
 	} 
