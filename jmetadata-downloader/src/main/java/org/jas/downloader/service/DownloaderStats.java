@@ -21,7 +21,7 @@ public class DownloaderStats {
 		counter.setType(type);
 		counter.setRemoteAddress(remoteAddress);
 		counter.setTimestamp(timeUtil.getTimestamp());
-		downloaderDao.save(remoteAddress);
+		downloaderDao.save(counter);
 	}
 	
 	
