@@ -17,7 +17,7 @@ import javax.ws.rs.core.StreamingOutput;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jas.downloader.bean.INSTALLER;
+import org.jas.downloader.bean.Installer;
 import org.jas.downloader.service.DownloaderService;
 import org.jas.downloader.service.DownloaderStats;
 import org.jas.downloader.util.DownloaderContext;
@@ -40,14 +40,40 @@ public class DownloaderController {
 	@GET
 	@Path("/getUbuntu")
 	@Produces({ MediaType.APPLICATION_OCTET_STREAM })
-	public Response getQuery(@Context HttpServletRequest request) throws IOException {
+	public Response getUbuntu(@Context HttpServletRequest request) throws IOException {
 		log.info("DOWNLOADING Ubuntu from: " + request.getRemoteAddr());
 		
-		File file = downloaderContext.getFile(INSTALLER.Ubuntu);
+		File file = downloaderContext.getFile(Installer.Ubuntu);
         StreamingOutput stream = downloaderService.getStream(file);
-        downloaderStats.saveRemoteAddress(request.getRemoteAddr());
+        downloaderStats.saveStats(Installer.Ubuntu, request.getRemoteAddr());
         
-        return Response.ok(stream).header("content-disposition","attachment; filename = "+file.getName()).build();
+        return Response.ok(stream).header("content-disposition","attachment; filename = " + file.getName()).build();
+	} 
+	
+	@GET
+	@Path("/getMac")
+	@Produces({ MediaType.APPLICATION_OCTET_STREAM })
+	public Response getMac(@Context HttpServletRequest request) throws IOException {
+		log.info("DOWNLOADING Mac from: " + request.getRemoteAddr());
+		
+		File file = downloaderContext.getFile(Installer.Mac);
+        StreamingOutput stream = downloaderService.getStream(file);
+        downloaderStats.saveStats(Installer.Mac, request.getRemoteAddr());
+        
+        return Response.ok(stream).header("content-disposition","attachment; filename = " + file.getName()).build();
+	} 
+	
+	@GET
+	@Path("/getWindows")
+	@Produces({ MediaType.APPLICATION_OCTET_STREAM })
+	public Response getWindows(@Context HttpServletRequest request) throws IOException {
+		log.info("DOWNLOADING Windows from: " + request.getRemoteAddr());
+		
+		File file = downloaderContext.getFile(Installer.Windows);
+        StreamingOutput stream = downloaderService.getStream(file);
+        downloaderStats.saveStats(Installer.Mac, request.getRemoteAddr());
+        
+        return Response.ok(stream).header("content-disposition","attachment; filename = " + file.getName()).build();
 	} 
 
 }

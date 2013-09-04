@@ -4,12 +4,12 @@ import java.io.File;
 
 import javax.inject.Named;
 
-import org.jas.downloader.bean.INSTALLER;
+import org.jas.downloader.bean.Installer;
 
 @Named
 public class DownloaderContext {
 
-	public File getFile(INSTALLER type) {
+	public File getFile(Installer type) {
 
 		switch (type) {
 			case Ubuntu:

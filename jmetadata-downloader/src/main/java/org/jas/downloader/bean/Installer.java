@@ -1,5 +1,5 @@
 package org.jas.downloader.bean;
 
-public enum INSTALLER {
+public enum Installer {
 	Ubuntu, Mac, Windows
 }
